@@ -1,118 +1,106 @@
-# Stellar Notes DApp
+# StellarSplit MVP - Stellar White Belt Challenge
 
-**Stellar Notes DApp** - Blockchain-Based Decentralized Note-Taking System
+**StellarSplit** is a future Global Group Payment platform designed for seamless, cross-border bill splitting using the Stellar blockchain. 
 
-## Project Description
-
-Stellar Notes DApp is a decentralized smart contract solution built on the Stellar blockchain using Soroban SDK. It provides a secure, immutable platform for managing personal notes directly on the blockchain. The contract ensures that your data is stored transparently and is only manageable through predefined smart contract functions, eliminating reliance on centralized database providers.
-
-The system allows users to create, view, and delete notes, leveraging the efficiency and security of the Stellar network. Each note is uniquely identified and stored within the contract's instance storage, ensuring data persistence and reliability.
-
-## Project Vision
-
-Our vision is to revolutionize personal productivity in the digital age by:
-
-- **Decentralizing Data**: Moving note-taking from centralized servers to a global, distributed blockchain
-- **Ensuring Ownership**: Empowering users to have complete control and ownership over their digital thoughts and information
-- **Guaranteeing Immutability**: Providing a permanent, tamper-proof record of notes that cannot be altered or deleted by third parties
-- **Enhancing Privacy**: Leveraging blockchain security to protect personal information from unauthorized access
-- **Building Trustless Systems**: Creating a platform where data integrity is guaranteed by code, not by company promises
-
-We envision a future where digital information is truly personal and sovereign, empowering individuals with complete autonomy over their digital assets.
-
-## Key Features
-
-### 1. **Simple Note Creation**
-
-- Create notes with just one function call
-- Specify title and content for each note
-- Automated ID generation for unique identification
-- Persistent storage on the Stellar blockchain
-
-### 2. **Efficient Data Retrieval**
-
-- Fetch all stored notes in a single call
-- Structured data representation for easy frontend integration
-- Quick access to your entire note collection
-- Real-time synchronization with the blockchain state
-
-### 3. **Secure Deletion**
-
-- Remove specific notes using their unique IDs
-- Permanent removal from the contract storage
-- Clean and efficient storage management
-- Immediate update of the note list after deletion
-
-### 4. **Transparency and Security**
-
-- View all note activities on the blockchain
-- Blockchain-based verification of all storage actions
-- Immutable records of note creation and deletion
-- Protected against unauthorized modifications
-
-### 5. **Stellar Network Integration**
-
-- Leverages the high speed and low cost of Stellar
-- Built using the modern Soroban Smart Contract SDK
-- Scalable architecture for growing note collections
-- Interoperable with other Stellar-based services
-
-## Contract Details
-
-- Contract Address: CBLU4IUASQ4WUMOXBFLZRSBBLILGOH33GS4LUPKFBCCCMJCDQNMF7G2M
-  (Screenshot has been removed)
-
-## Future Scope
-
-### Short-Term Enhancements
-
-1. **Note Encryption**: Support for end-to-end encryption of note content for enhanced privacy
-2. **Category Management**: Add tags and categories to organize notes efficiently
-3. **Rich Text Support**: Extend support beyond plain text to include Markdown and formatted content
-4. **Search Functionality**: Implement advanced search filters for large note collections
-
-### Medium-Term Development
-
-5. **Collaborative Notes**: Implement multi-signature requirements for shared or collaborative note-taking
-   - Shared access for multiple addresses
-   - Permission-based editing and viewing
-   - Version history tracking
-6. **Notification System**: Off-chain bridge to alert users of new updates or shared notes
-7. **Asset Attachment**: Capability to attach digital assets or tokens to specific notes
-8. **Inter-Contract Integration**: Allow other smart contracts to interact with and store data in the notes contract
-
-### Long-Term Vision
-
-9. **Cross-Chain Synchronization**: Extend note storage to multiple blockchain networks
-10. **Decentralized UI Hosting**: Host the frontend on IPFS or similar decentralized platforms
-11. **AI-Powered Summarization**: Optional integration with AI to help users summarize their notes
-12. **Privacy Layers**: Implement zero-knowledge proofs for completely private note content
-13. **DAO Governance**: Community-driven protocol improvements and feature prioritization
-14. **Identity Management**: Integration with decentralized identity (DID) systems for user management
-
-### Enterprise Features
-
-15. **Corporate Documentation**: Adapt the system for secure corporate record-keeping
-16. **Immutable Logging**: Create time-locked logs for audit purposes
-17. **Automated Reporting**: Automatic note triggers for periodic reporting
-18. **Multi-Language Support**: Expand accessibility with internationalization
+This repository contains the **Level 1 (White Belt) MVP** frontend application, demonstrating Freighter Wallet integration, Stellar Testnet Horizon communication, real-time XLM balance retrieval, and instant testnet transactions.
 
 ---
 
-## Technical Requirements
+## ⚡ White Belt Challenge Features
 
-- Soroban SDK
-- Rust programming language
-- Stellar blockchain network
-
-## Getting Started
-
-Deploy the smart contract to Stellar's Soroban network and interact with it using the three main functions:
-
-- `create_note()` - Create a new note with a title and content
-- `get_notes()` - Retrieve all stored notes from the contract
-- `delete_note()` - Remove a specific note by its ID
+- **Freighter Wallet Integration**: Automatically detects and hooks into the Freighter browser extension API.
+- **Stellar Testnet Connection**: Configured to query and send transactions to the Stellar Horizon Testnet.
+- **Connect / Disconnect Wallet**: Simple connect/disconnect flow with active status indicators and key mask displays.
+- **Balance Display**: Fetches and displays native XLM balance in real-time, handling loading and unfunded (404) states.
+- **Instant Payment Form**: Provides recipient key validation and XLM amount checking, routing payments on-chain.
+- **Real-time Transaction Feedback**: Displays clean `idle`, `Sending...`, `Success` (with transaction hash and explorer link), or `Failed` status cards.
+- **Error Handling**: Captures and handles Freighter missing, user rejection, network anomalies, invalid public keys, and insufficient funds.
 
 ---
 
-**Stellar Notes DApp** - Securing Your Thoughts on the Blockchain
+## 📸 Required Screenshot Checklist (for Submission)
+
+When submitting this project for your certification, make sure to capture the following states:
+1. **Wallet Connected**: Show the connected status badge and the masked wallet public key.
+2. **XLM Balance**: Show your active XLM balance in the balance card.
+3. **Successful Testnet Transaction**: Show the transaction status card displaying the success checkmark.
+4. **Transaction Result & Hash**: Show the exact resulting transaction hash displayed in the status card.
+
+---
+
+## 🛠️ Tech Stack & Directory Structure
+
+- **Framework**: Next.js 15 (App Router, Tailwind CSS v4)
+- **UI Styling**: Tailwind CSS, lucide-react icons, and shadcn/ui primitives
+- **Blockchain Libraries**: `@stellar/stellar-sdk` & `@stellar/freighter-api`
+
+### Core Project Structure
+```
+stellarsplit/
+├── src/
+│   ├── app/
+│   │   ├── globals.css      # Design system rules
+│   │   └── page.tsx         # Dashboard layout and state controller
+│   ├── components/
+│   │   ├── Navbar.tsx       # Logo, network state, and connect button
+│   │   ├── WalletCard.tsx   # Freighter status, key display, installation warnings
+│   │   ├── BalanceCard.tsx  # Dynamic XLM balance, skeletons, and Friendbot funding warning
+│   │   ├── PaymentForm.tsx  # Validation, 'Sending...' state, and hash reporting
+│   │   └── ui/              # shadcn/ui components (card, input, label, button)
+│   └── lib/
+│       ├── stellar.ts       # Stellar Horizon fetch & transaction builder
+│       └── wallet.ts        # Freighter wallet API integration layer
+├── public/
+├── package.json
+├── tsconfig.json
+└── .env.local.example       # Example configuration details
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+1. Install the [Freighter browser extension](https://www.freighter.app/).
+2. Open Freighter, go to **Settings > Network**, and ensure it is set to **Testnet**.
+3. Create or import an account in Freighter.
+4. If your testnet wallet has 0 XLM, go to the [Stellar Laboratory Friendbot](https://laboratory.stellar.org/#friendbot), paste your public address, and fund it with testnet XLM.
+
+### Run the App Locally
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/hafizandrean/StellarSplit.git
+   cd StellarSplit
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser to test.
+
+4. **Verify TypeScript and Production Build:**
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 🔮 Future Roadmap (Placeholders only, not in MVP)
+
+- **Smart Split Settlement**: Auto-calculate optimal group settlements on-chain.
+- **USDC Payments**: Settle group bills in stable coins to protect against crypto price fluctuations.
+- **Cross-border Settlement**: Swap currencies instantly using Stellar anchor bridges.
+- **QR Group Payments**: Scan a bill split QR code to join an active dining group instant settlement page.
+
+---
+
+## 📝 License
+Built for educational purposes as part of the Stellar Developer White Belt Certification Challenge.
