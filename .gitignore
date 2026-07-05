@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Stellar CLI & Soroban Contract build artifacts
+stellar.exe
+/contracts/stellar-split-contract/target/
+.env.local
+
