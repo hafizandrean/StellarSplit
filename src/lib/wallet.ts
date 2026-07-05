@@ -1,58 +1,89 @@
-import { isConnected, requestAccess, getAddress } from "@stellar/freighter-api";
+import { StellarWalletsKit, Networks } from "@creit.tech/stellar-wallets-kit";
+import { AlbedoModule } from "@creit.tech/stellar-wallets-kit/modules/albedo";
+import { FreighterModule } from "@creit.tech/stellar-wallets-kit/modules/freighter";
 
-/**
- * Checks if the Freighter Wallet browser extension is installed.
- */
-export async function isFreighterInstalled(): Promise<boolean> {
-  try {
-    const result = await isConnected();
-    return !!result?.isConnected;
-  } catch {
-    return false;
-  }
+// Initialize the wallets kit statically
+// This configures Freighter and Albedo modules on Testnet
+let isInitialized = false;
+
+export function initWalletKit() {
+  if (isInitialized) return;
+  StellarWalletsKit.init({
+    network: Networks.TESTNET,
+    modules: [
+      new FreighterModule(),
+      new AlbedoModule(),
+    ],
+  });
+  isInitialized = true;
 }
 
 /**
- * Connects the Freighter Wallet and retrieves the user's active public key.
- * Throws an error if Freighter is not installed, or if the connection request fails.
+ * Opens the built-in modal for wallet connection.
+ * Resolves with the public address and the selected wallet name.
  */
-export async function connectWallet(): Promise<string> {
-  const installed = await isFreighterInstalled();
-  if (!installed) {
-    throw new Error("Freighter Wallet is not installed. Please install the extension from freighter.app.");
-  }
-
+export async function connectWallet(): Promise<{ address: string; walletName: string }> {
+  initWalletKit();
   try {
-    const result = await requestAccess();
-    if (result.error) {
-      throw new Error(result.error);
+    const result = await StellarWalletsKit.authModal();
+    if (!result?.address) {
+      throw new Error("No address was returned from the wallet connection.");
     }
-    if (!result.address) {
-      throw new Error("No active public key returned. Please make sure your Freighter Wallet is unlocked and shared.");
-    }
-    return result.address;
+    
+    // Retrieve the selected module's name
+    const walletName = StellarWalletsKit.selectedModule?.productName || "Stellar Wallet";
+    return {
+      address: result.address,
+      walletName,
+    };
   } catch (error: any) {
-    // Freighter throws if the user rejects the connection or locks their wallet
-    throw new Error(
-      error?.message || "Freighter Wallet connection was rejected or failed. Please check the extension."
-    );
+    console.error("Wallet connection failed:", error);
+    throw new Error(error?.message || "Wallet connection was rejected or failed.");
   }
 }
 
 /**
- * Retrieves the currently active public key from the Freighter Wallet.
+ * Retrieves the currently connected address from the kit's active memory, if any.
  */
-export async function getActivePublicKey(): Promise<string | null> {
-  const installed = await isFreighterInstalled();
-  if (!installed) return null;
-
+export async function getConnectedAddress(): Promise<{ address: string; walletName: string } | null> {
+  initWalletKit();
   try {
-    const result = await getAddress();
-    if (result.error || !result.address) {
-      return null;
+    const result = await StellarWalletsKit.getAddress();
+    if (result?.address) {
+      const walletName = StellarWalletsKit.selectedModule?.productName || "Stellar Wallet";
+      return { address: result.address, walletName };
     }
-    return result.address;
+    return null;
   } catch {
     return null;
+  }
+}
+
+/**
+ * Signs a transaction XDR string using the active connected wallet.
+ * Returns the signed transaction XDR string.
+ */
+export async function signTxWithWallet(xdr: string, address: string): Promise<string> {
+  initWalletKit();
+  try {
+    const networkPassphrase =
+      process.env.NEXT_PUBLIC_NETWORK_PASSPHRASE ||
+      "Test SDF Network ; September 2015";
+
+    const result = await StellarWalletsKit.signTransaction(xdr, {
+      networkPassphrase,
+      address,
+    });
+
+    if (!result?.signedTxXdr) {
+      throw new Error("No signed transaction XDR returned from the wallet.");
+    }
+
+    return result.signedTxXdr;
+  } catch (error: any) {
+    console.error("Signing transaction failed:", error);
+    throw new Error(
+      error?.message || "Transaction signing was rejected by the user or failed."
+    );
   }
 }

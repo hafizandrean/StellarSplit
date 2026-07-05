@@ -1,30 +1,45 @@
-# StellarSplit MVP - Stellar White Belt Challenge
+# StellarSplit MVP - Stellar Yellow Belt Challenge (Level 2)
 
-**StellarSplit** is a future Global Group Payment platform designed for seamless, cross-border bill splitting using the Stellar blockchain. 
+**StellarSplit** is a Global Group Payment platform designed for seamless, cross-border bill splitting using the Stellar blockchain. 
 
-This repository contains the **Level 1 (White Belt) MVP** frontend application, demonstrating Freighter Wallet integration, Stellar Testnet Horizon communication, real-time XLM balance retrieval, and instant testnet transactions.
+This repository contains the **Level 2 (Yellow Belt) MVP**, integrating a Rust-based Soroban Smart Contract deployed on Stellar Testnet, multi-wallet support (Freighter & Albedo), real-time on-chain transaction logs, contract event streaming, and robust error handling.
 
 ---
 
-## ⚡ White Belt Challenge Features
+## ⚡ Deployed Smart Contract Details
 
-- **Freighter Wallet Integration**: Automatically detects and hooks into the Freighter browser extension API.
-- **Stellar Testnet Connection**: Configured to query and send transactions to the Stellar Horizon Testnet.
-- **Connect / Disconnect Wallet**: Simple connect/disconnect flow with active status indicators and key mask displays.
-- **Balance Display**: Fetches and displays native XLM balance in real-time, handling loading and unfunded (404) states.
-- **Instant Payment Form**: Provides recipient key validation and XLM amount checking, routing payments on-chain.
-- **Real-time Transaction Feedback**: Displays clean `idle`, `Sending...`, `Success` (with transaction hash and explorer link), or `Failed` status cards.
-- **Error Handling**: Captures and handles Freighter missing, user rejection, network anomalies, invalid public keys, and insufficient funds.
+- **Soroban Contract ID**: `CCNMXX6V5DZLH3LCJOTRMXWKKGNTUL4677FS4UO7HA4KWNDWD7C4EFNE`
+- **Wasm Hash**: `c752993f215b7e7de264941e45f1e75fb8b7901497ea8ced4db824e981c4bba7`
+- **Deployment Transaction Hash**: `72e75243e19c2523578f0c7b7fb1c1cb30f0037b88651b413111a166654b7cfd`
+- **Stellar Expert URL**: [Transaction 72e75243... on Stellar.Expert](https://stellar.expert/explorer/testnet/tx/72e75243e19c2523578f0c7b7fb1c1cb30f0037b88651b413111a166654b7cfd)
+- **Stellar Lab Explorer URL**: [Contract CCNMXX6V... on Stellar Laboratory](https://lab.stellar.org/r/testnet/contract/CCNMXX6V5DZLH3LCJOTRMXWKKGNTUL4677FS4UO7HA4KWNDWD7C4EFNE)
+
+---
+
+## 🌟 Yellow Belt Challenge Features
+
+1. **Soroban Smart Contract**: Wrote a custom Rust Soroban contract implementing:
+   - `create_bill(creator, title, total_amount, participants_count)`: Emits a `create` event topic.
+   - `get_bill(bill_id)`: Fetches bill details from Soroban instance storage.
+   - `pay_bill(bill_id, amount, payer)`: Processes payments, checks boundaries, prevents duplicate pay, and emits `pay` event topic.
+2. **On-Chain Error Codes (Panic Handled)**:
+   - `BillNotFound` (Error code: 1): Thrown if trying to look up or pay a non-existent bill.
+   - `InvalidAmount` (Error code: 2): Thrown if payment amount is zero or bill total amount is invalid.
+   - `AlreadyPaid` (Error code: 3): Thrown if the bill is already fully settled.
+   - `AmountTooLarge` (Error code: 4): Thrown if payment exceeds the remaining split debt.
+3. **Multi-Wallet Support**: Integrated Freighter and Albedo wallets via `@creit.tech/stellar-wallets-kit`, allowing users to select their favorite wallet client via a built-in modal.
+4. **Real-time On-Chain Activity Feed**: Streams and displays logs of successful transactions, payouts, and system state changes locally in the dashboard in real-time.
+5. **Interactive UI Dashboards**: Includes separate forms for **Create Split Bill** and **Search & Pay Split Bill**, complete with progress bars, fee estimates, transaction statuses, and hashes.
 
 ---
 
 ## 📸 Required Screenshot Checklist (for Submission)
 
-When submitting this project for your certification, make sure to capture the following states:
-1. **Wallet Connected**: Show the connected status badge and the masked wallet public key.
-2. **XLM Balance**: Show your active XLM balance in the balance card.
-3. **Successful Testnet Transaction**: Show the transaction status card displaying the success checkmark.
-4. **Transaction Result & Hash**: Show the exact resulting transaction hash displayed in the status card.
+1. **Wallet Selection Modal**: Show Albedo / Freighter options from Creit Tech's wallet kit modal.
+2. **Active Wallet & Public Key**: Show the selected wallet badge (e.g. `Freighter`) next to the masked public address.
+3. **Create Bill Transaction**: Show the `success` card showing the new on-chain Bill ID.
+4. **Payment Progress**: Show the progress bar updating when paying towards a split bill ID.
+5. **Activity Log Feed**: Show real-time logs updating at the bottom of your dashboard.
 
 ---
 
@@ -32,28 +47,30 @@ When submitting this project for your certification, make sure to capture the fo
 
 - **Framework**: Next.js 15 (App Router, Tailwind CSS v4)
 - **UI Styling**: Tailwind CSS, lucide-react icons, and shadcn/ui primitives
-- **Blockchain Libraries**: `@stellar/stellar-sdk` & `@stellar/freighter-api`
+- **Blockchain Libraries**: `@stellar/stellar-sdk` & `@creit.tech/stellar-wallets-kit`
+- **Smart Contract Language**: Rust (Soroban SDK v22.0.11)
 
-### Core Project Structure
 ```
-stellarsplit/
+StellarSplit/
+├── contracts/
+│   └── stellar-split-contract/
+│       ├── src/
+│       │   └── lib.rs       # Soroban Rust Contract (storage keys, logic, events)
+│       └── Cargo.toml       # Cargo settings with target wasm32v1-none
 ├── src/
 │   ├── app/
 │   │   ├── globals.css      # Design system rules
-│   │   └── page.tsx         # Dashboard layout and state controller
+│   │   └── page.tsx         # Dashboard layout, state logs, and event managers
 │   ├── components/
-│   │   ├── Navbar.tsx       # Logo, network state, and connect button
-│   │   ├── WalletCard.tsx   # Freighter status, key display, installation warnings
-│   │   ├── BalanceCard.tsx  # Dynamic XLM balance, skeletons, and Friendbot funding warning
-│   │   ├── PaymentForm.tsx  # Validation, 'Sending...' state, and hash reporting
-│   │   └── ui/              # shadcn/ui components (card, input, label, button)
+│   │   ├── Navbar.tsx       # Logo, network state, wallet type, and address
+│   │   ├── WalletCard.tsx   # StellarWalletsKit details and connection statuses
+│   │   ├── BalanceCard.tsx  # Dynamic XLM balance and skeletal states
+│   │   ├── CreateBillForm.tsx # Bill inputs, simulation stages, and success cards
+│   │   ├── BillView.tsx     # Query inputs, payment forms, and progress bars
+│   │   └── PaymentForm.tsx  # Level 1 native XLM transfer compatibility form
 │   └── lib/
-│       ├── stellar.ts       # Stellar Horizon fetch & transaction builder
-│       └── wallet.ts        # Freighter wallet API integration layer
-├── public/
-├── package.json
-├── tsconfig.json
-└── .env.local.example       # Example configuration details
+│       ├── stellar.ts       # Soroban RPC client, simulation, and transaction builders
+│       └── wallet.ts        # StellarWalletsKit static class initializer
 ```
 
 ---
@@ -62,10 +79,13 @@ stellarsplit/
 
 ### Prerequisites
 
-1. Install the [Freighter browser extension](https://www.freighter.app/).
-2. Open Freighter, go to **Settings > Network**, and ensure it is set to **Testnet**.
-3. Create or import an account in Freighter.
-4. If your testnet wallet has 0 XLM, go to the [Stellar Laboratory Friendbot](https://laboratory.stellar.org/#friendbot), paste your public address, and fund it with testnet XLM.
+For developer contract updates, make sure you have the following preinstalled:
+- Rust (toolchain `stable-x86_64-pc-windows-gnu` and target `wasm32v1-none` for Soroban builds)
+- [Stellar CLI](https://developers.stellar.org/docs/tools/stellar-cli) (v27+) to compile and deploy.
+
+For users:
+- [Freighter Wallet browser extension](https://www.freighter.app/) or [Albedo Wallet account](https://albedo.link/).
+- Set Freighter network settings to **Testnet**.
 
 ### Run the App Locally
 
@@ -75,32 +95,31 @@ stellarsplit/
    cd StellarSplit
    ```
 
-2. **Install dependencies:**
+2. **Configure Environment Variables:**
+   Create a `.env.local` file in the root (matching `.env.local.example`):
+   ```env
+   NEXT_PUBLIC_CONTRACT_ID=CCNMXX6V5DZLH3LCJOTRMXWKKGNTUL4677FS4UO7HA4KWNDWD7C4EFNE
+   NEXT_PUBLIC_SOROBAN_RPC_URL=https://soroban-testnet.stellar.org
+   NEXT_PUBLIC_NETWORK_PASSPHRASE="Test SDF Network ; September 2015"
+   ```
+
+3. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Start the development server:**
+4. **Start the development server:**
    ```bash
    npm run dev
    ```
-   Open [http://localhost:3000](http://localhost:3000) in your browser to test.
+   Open [http://localhost:3000](http://localhost:3000) to test.
 
-4. **Verify TypeScript and Production Build:**
+5. **Compile production build:**
    ```bash
    npm run build
    ```
 
 ---
 
-## 🔮 Future Roadmap (Placeholders only, not in MVP)
-
-- **Smart Split Settlement**: Auto-calculate optimal group settlements on-chain.
-- **USDC Payments**: Settle group bills in stable coins to protect against crypto price fluctuations.
-- **Cross-border Settlement**: Swap currencies instantly using Stellar anchor bridges.
-- **QR Group Payments**: Scan a bill split QR code to join an active dining group instant settlement page.
-
----
-
 ## 📝 License
-Built for educational purposes as part of the Stellar Developer White Belt Certification Challenge.
+Built for educational purposes as part of the Stellar Developer Yellow Belt Certification Challenge (Level 2).

@@ -6,6 +6,7 @@ import { Wallet, LogOut, Loader2 } from "lucide-react";
 
 interface NavbarProps {
   walletAddress: string | null;
+  walletName: string | null;
   isConnecting: boolean;
   onConnect: () => void;
   onDisconnect: () => void;
@@ -13,6 +14,7 @@ interface NavbarProps {
 
 export default function Navbar({
   walletAddress,
+  walletName,
   isConnecting,
   onConnect,
   onDisconnect,
@@ -44,7 +46,7 @@ export default function Navbar({
             {walletAddress ? (
               <div className="flex items-center gap-2">
                 <span className="hidden md:inline-block text-xs font-medium text-zinc-400 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-lg font-mono">
-                  {formatAddress(walletAddress)}
+                  {walletName ? `${walletName}: ` : ""}{formatAddress(walletAddress)}
                 </span>
                 <Button
                   onClick={onDisconnect}
