@@ -158,16 +158,16 @@ export default function Home() {
         
         <div className="mx-auto max-w-4xl text-center space-y-6 relative z-10">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-violet-950/40 text-violet-400 border border-violet-900/50">
-            ⚡ Soroban Smart Contract integration
+            ⚡ Transaksi Aman & Terdesentralisasi
           </span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
-            Global Group Payments on{" "}
+            Patungan Kelompok Global di{" "}
             <span className="bg-gradient-to-r from-violet-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent">
               Soroban
             </span>
           </h1>
           <p className="text-zinc-400 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            The future of cross-border bill splitting. This MVP demonstrates Freighter and Albedo connection with live Soroban contract payments.
+            Bagi tagihan kelompok, makan bersama, dan pengeluaran kelompok lainnya secara instan, adil, dan aman di jaringan blockchain Stellar.
           </p>
         </div>
       </header>
@@ -327,8 +327,8 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-zinc-900 bg-zinc-950 py-8 text-center text-xs text-zinc-500">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-2">
-          <p>© {new Date().getFullYear()} StellarSplit MVP. All rights reserved.</p>
-          <p className="text-zinc-600 font-medium">Built for Stellar Yellow Belt Challenge (Level 2).</p>
+          <p>© {new Date().getFullYear()} StellarSplit. All rights reserved.</p>
+          <p className="text-zinc-600 font-medium">Platform Patungan Kelompok Terdesentralisasi di Jaringan Stellar.</p>
         </div>
       </footer>
     </div>

@@ -34,11 +34,11 @@ export default function BalanceCard({
 
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-semibold tracking-tight text-white flex items-center justify-between">
-          <span>Stellar Account Balance</span>
+          <span>Saldo Akun Stellar</span>
           <Coins className="h-5 w-5 text-indigo-400" />
         </CardTitle>
         <CardDescription className="text-zinc-400 text-sm">
-          Available funds in native XLM asset
+          Dana yang tersedia dalam aset native XLM
         </CardDescription>
       </CardHeader>
 
@@ -49,7 +49,7 @@ export default function BalanceCard({
               --.---- XLM
             </div>
             <p className="text-xs text-zinc-500">
-              Connect your wallet to retrieve balance
+              Hubungkan dompet untuk melihat saldo
             </p>
           </div>
         ) : loading ? (

@@ -32,19 +32,19 @@ export default function WalletCard({
       
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-semibold tracking-tight text-white flex items-center justify-between">
-          <span>Stellar Wallet Connection</span>
+          <span>Koneksi Dompet Stellar</span>
           {walletAddress ? (
             <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800/40">
-              <CheckCircle2 className="h-3 w-3" /> Connected
+              <CheckCircle2 className="h-3 w-3" /> Terhubung
             </span>
           ) : (
             <span className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 bg-zinc-800 px-2.5 py-0.5 rounded-full border border-zinc-700/50">
-              <AlertCircle className="h-3 w-3" /> Disconnected
+              <AlertCircle className="h-3 w-3" /> Terputus
             </span>
           )}
         </CardTitle>
         <CardDescription className="text-zinc-400 text-sm">
-          Select Freighter or Albedo wallet to interact with Soroban.
+          Hubungkan dompet digital Freighter atau Albedo Anda untuk bertransaksi aman.
         </CardDescription>
       </CardHeader>
 
@@ -102,13 +102,13 @@ export default function WalletCard({
               <Wallet className="h-6 w-6" />
             </div>
             <p className="text-sm text-zinc-400 max-w-xs mx-auto">
-              Please connect your Stellar wallet to view balances, create expenses, and pay splits.
+              Hubungkan dompet Stellar Anda untuk melihat saldo XLM, membuat patungan baru, dan melunasi tagihan kelompok.
             </p>
             <Button
               onClick={onConnect}
               className="mt-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-medium shadow-md transition-all duration-200"
             >
-              Connect Wallet Options
+              Hubungkan Dompet
             </Button>
           </div>
         )}
