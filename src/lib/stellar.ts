@@ -111,7 +111,7 @@ async function sendSorobanTx(
     }
 
     // 4. Assemble the transaction with the simulation metadata
-    const preparedTx = rpc.assembleTransaction(tx, simResult) as any;
+    const preparedTx = rpc.assembleTransaction(tx, simResult).build();
 
     // 5. Sign transaction via user wallet
     onStatusChange?.("Pending Signature...");
