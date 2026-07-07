@@ -134,8 +134,8 @@ export default function Home() {
   };
 
   // 7. Callback when payment succeeds
-  const handlePaymentSuccess = () => {
-    addActivityLog("pay", `Submitted split bill payment towards ID #${activeBillId}`);
+  const handlePaymentSuccess = (billId: number) => {
+    addActivityLog("pay", `Submitted split bill payment towards ID #${billId}`);
     if (walletAddress) {
       fetchUserBalance(walletAddress);
     }

@@ -11,7 +11,7 @@ import { Search, Loader2, CheckCircle2, AlertTriangle, XCircle, ExternalLink, Ca
 interface BillViewProps {
   walletAddress: string | null;
   activeBillId: number | null;
-  onPaymentSuccess: () => void;
+  onPaymentSuccess: (billId: number) => void;
 }
 
 type SearchState = "idle" | "loading" | "found" | "not_found";
@@ -120,7 +120,7 @@ export default function BillView({
       setPayAmount("0");
 
       // Notify parent to refresh balance
-      onPaymentSuccess();
+      onPaymentSuccess(bill.id);
     } catch (err: any) {
       console.error(err);
       setPayErrorMsg(err.message || "Failed to process contract payment.");
