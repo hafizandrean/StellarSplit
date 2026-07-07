@@ -145,11 +145,11 @@ export default function BillView({
 
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-semibold tracking-tight text-white flex items-center justify-between">
-          <span>Search & Pay Bill</span>
+          <span>Cari & Bayar Patungan</span>
           <Search className="h-4 w-4 text-cyan-400" />
         </CardTitle>
         <CardDescription className="text-zinc-400 text-sm">
-          Lookup any registered bill ID and pay your share.
+          Cari tagihan patungan aktif berdasarkan ID di blockchain, lihat status keterisiannya, lalu bayar bagian Anda.
         </CardDescription>
       </CardHeader>
 
@@ -160,7 +160,7 @@ export default function BillView({
             <span className="absolute left-3 top-2.5 text-zinc-500 font-mono text-sm">#</span>
             <Input
               type="number"
-              placeholder="Enter Bill ID (e.g. 1)"
+              placeholder="Masukkan ID Tagihan (contoh: 2)"
               value={searchId}
               onChange={(e) => setSearchId(e.target.value)}
               className="bg-zinc-950/80 border-zinc-800 text-zinc-100 placeholder-zinc-600 pl-7 focus-visible:ring-cyan-500"
@@ -248,10 +248,39 @@ export default function BillView({
                   <span>Created: <strong className="text-zinc-300">{formatDate(bill.created_at)}</strong></span>
                 </div>
                 <div className="flex items-center gap-2 text-zinc-400">
-                  <span>Participants: <strong className="text-white font-mono">{bill.participants_count}</strong></span>
+                  <span>Anggota Kelompok: <strong className="text-white font-mono">{bill.participants_count} orang</strong></span>
                 </div>
                 <div className="flex items-center gap-2 text-zinc-400">
-                  <span>Share Size: <strong className="text-white font-mono">{(bill.total_amount / bill.participants_count).toFixed(2)} XLM</strong></span>
+                  <span>Bagian Individu: <strong className="text-white font-mono">{(bill.total_amount / bill.participants_count).toFixed(2)} XLM</strong></span>
+                </div>
+              </div>
+
+              {/* Dynamic split visualization grid */}
+              <div className="border-t border-zinc-900 pt-3.5 space-y-2">
+                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block">
+                  Status Pembayaran Kelompok
+                </span>
+                <div className="grid grid-cols-6 sm:grid-cols-8 gap-2">
+                  {Array.from({ length: bill.participants_count }).map((_, index) => {
+                    const shareVal = bill.total_amount / bill.participants_count;
+                    const paidShares = Math.floor(bill.paid_amount / shareVal);
+                    const isPaidShare = index < paidShares;
+                    
+                    return (
+                      <div
+                        key={index}
+                        className={`flex flex-col items-center justify-center p-1.5 rounded-lg border text-center transition-all ${
+                          isPaidShare
+                            ? "bg-emerald-950/40 border-emerald-800/40 text-emerald-400"
+                            : "bg-zinc-950/50 border-zinc-900 text-zinc-600"
+                        }`}
+                        title={isPaidShare ? `Anggota ${index + 1}: Sudah Bayar` : `Anggota ${index + 1}: Belum Bayar`}
+                      >
+                        <User className={`h-4 w-4 ${isPaidShare ? "text-emerald-400 animate-pulse" : "text-zinc-700"}`} />
+                        <span className="text-[9px] font-mono mt-1">Org {index + 1}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

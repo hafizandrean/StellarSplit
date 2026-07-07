@@ -102,11 +102,11 @@ export default function CreateBillForm({
       
       <CardHeader>
         <CardTitle className="text-lg font-semibold tracking-tight text-white flex items-center justify-between">
-          <span>Create New Split Bill</span>
+          <span>Buat Grup Patungan Baru</span>
           <FilePlus className="h-4 w-4 text-violet-400" />
         </CardTitle>
         <CardDescription className="text-zinc-400 text-sm">
-          Register a new expense split directly in the Soroban smart contract.
+          Daftarkan pengeluaran kelompok (makan, sewa, dll.) untuk dibagi rata langsung di Smart Contract Soroban.
         </CardDescription>
       </CardHeader>
 
@@ -115,11 +115,11 @@ export default function CreateBillForm({
           {/* Bill Title */}
           <div className="space-y-2">
             <Label htmlFor="title" className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-              Bill Title
+              Deskripsi Patungan
             </Label>
             <Input
               id="title"
-              placeholder="e.g. Dinner at Sushi Hiro"
+              placeholder="Contoh: Patungan Makan Siang"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               disabled={!walletAddress || txState === "pending"}
@@ -132,7 +132,7 @@ export default function CreateBillForm({
             {/* Total Amount */}
             <div className="space-y-2">
               <Label htmlFor="totalAmount" className="text-xs font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-1">
-                <Coins className="h-3 w-3 text-zinc-500" /> Total Amount (XLM)
+                <Coins className="h-3 w-3 text-zinc-500" /> Total Biaya (XLM)
               </Label>
               <Input
                 id="totalAmount"
@@ -150,7 +150,7 @@ export default function CreateBillForm({
             {/* Participants */}
             <div className="space-y-2">
               <Label htmlFor="participants" className="text-xs font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-1">
-                <Users className="h-3 w-3 text-zinc-500" /> Participants
+                <Users className="h-3 w-3 text-zinc-500" /> Jumlah Anggota
               </Label>
               <Input
                 id="participants"
@@ -168,7 +168,7 @@ export default function CreateBillForm({
           {/* Share calculation preview */}
           {parseFloat(totalAmount) > 0 && parseInt(participants) > 0 && (
             <div className="bg-zinc-950/50 rounded-lg p-2.5 border border-zinc-800/60 text-xs text-zinc-400 flex justify-between items-center">
-              <span>Estimated Share per Person:</span>
+              <span>Bagian per Anggota (Otomatis):</span>
               <span className="font-semibold text-white font-mono">
                 {(parseFloat(totalAmount) / parseInt(participants)).toFixed(4)} XLM
               </span>
