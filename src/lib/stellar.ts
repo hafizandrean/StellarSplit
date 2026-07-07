@@ -12,6 +12,7 @@ import {
   TimeoutInfinite,
   Account,
   Asset,
+  Keypair,
 } from "@stellar/stellar-sdk";
 import { signTxWithWallet } from "./wallet";
 
@@ -28,7 +29,7 @@ const CONTRACT_ID = process.env.NEXT_PUBLIC_CONTRACT_ID || "CCNMXX6V5DZLH3LCJOTR
 const NETWORK_PASSPHRASE = process.env.NEXT_PUBLIC_NETWORK_PASSPHRASE || "Test SDF Network ; September 2015";
 
 // A dummy account address used to construct transaction shells for view-only simulations
-const DUMMY_ADDRESS = "GD3F2L56IDKCMN2CCT32MVTZ2HNBMTWUN6K2M7C6Z3XN23UEXX2X2X2X";
+const DUMMY_ADDRESS = Keypair.random().publicKey();
 
 export interface BillData {
   id: number;
