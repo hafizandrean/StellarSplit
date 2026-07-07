@@ -96,7 +96,7 @@ export default function CreateBillForm({
   };
 
   return (
-    <Card className="border-zinc-800 bg-zinc-900/40 backdrop-blur-md text-zinc-100 shadow-xl overflow-hidden relative">
+    <Card className="glass-panel glass-panel-glow-violet text-zinc-100 shadow-xl overflow-hidden relative">
       {/* Decorative top gradient border */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-600 via-indigo-500 to-cyan-500" />
       

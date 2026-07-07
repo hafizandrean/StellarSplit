@@ -142,7 +142,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col selection:bg-violet-500 selection:text-white antialiased">
+    <div className="min-h-screen bg-zinc-950 bg-dot-grid text-zinc-100 flex flex-col selection:bg-violet-500 selection:text-white antialiased">
       {/* Navigation */}
       <Navbar
         walletAddress={walletAddress}
@@ -208,7 +208,7 @@ export default function Home() {
             </div>
 
             {/* On-Chain Activity Feed Log */}
-            <Card className="border-zinc-800 bg-zinc-900/30 backdrop-blur-md">
+            <Card className="glass-panel glass-panel-glow-violet overflow-hidden relative">
               <CardHeader className="py-4">
                 <CardTitle className="text-md font-semibold text-white flex items-center gap-2">
                   <Terminal className="h-4.5 w-4.5 text-cyan-400" />
